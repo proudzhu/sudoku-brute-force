@@ -3,30 +3,30 @@ struct Loc {
     col: usize,
 }
 
-fn find_unassigned_location(grid: &Vec<Vec<u8>>) -> Option<Loc> {
-    for row in 0..grid.len() {
-        for col in 0..grid[row].len() {
-            if grid[row][col] == 0 { return Some(Loc{ row, col }); }
+fn find_unassigned_location(grid: &[Vec<u8>]) -> Option<Loc> {
+    for (row, row_grid) in grid.iter().enumerate() {
+        for (col, &item) in row_grid.iter().enumerate() {
+            if item == 0 { return Some(Loc{ row, col }); }
         }
     }
     None
 }
 
-fn used_in_row(grid: &Vec<Vec<u8>>, row: usize, num: u8) -> bool {
+fn used_in_row(grid: &[Vec<u8>], row: usize, num: u8) -> bool {
     for col in 0..grid[row].len() {
         if grid[row][col] == num { return true; }
     }
     false
 }
 
-fn used_in_col(grid: &Vec<Vec<u8>>, col: usize, num: u8) -> bool {
-    for row in 0..grid.len() {
-        if grid[row][col] == num { return true; }
+fn used_in_col(grid: &[Vec<u8>], col: usize, num: u8) -> bool {
+    for row_grid in grid.iter() {
+        if row_grid[col] == num { return true; }
     }
     false
 }
 
-fn used_in_box(grid: &Vec<Vec<u8>>, row_start: usize, col_start: usize, num: u8) -> bool {
+fn used_in_box(grid: &[Vec<u8>], row_start: usize, col_start: usize, num: u8) -> bool {
     for row in 0..3 {
         for col in 0..3 {
             if grid[row+row_start][col+col_start] == num { return true; }
@@ -35,7 +35,7 @@ fn used_in_box(grid: &Vec<Vec<u8>>, row_start: usize, col_start: usize, num: u8)
     false
 }
 
-fn is_safe(grid: &Vec<Vec<u8>>, row: usize, col: usize, num: u8) -> bool {
+fn is_safe(grid: &[Vec<u8>], row: usize, col: usize, num: u8) -> bool {
     !used_in_row(grid, row, num) &&
     !used_in_col(grid, col, num) &&
     !used_in_box(grid, row / 3 * 3, col / 3 * 3, num)
@@ -59,9 +59,9 @@ fn solve_sudoku(grid: &mut Vec<Vec<u8>>) -> bool {
     false
 }
 
-fn print_grid(grid: &Vec<Vec<u8>>) {
-    for row in 0..grid.len() {
-        println!("{:?}", grid[row]);
+fn print_grid(grid: &[Vec<u8>]) {
+    for row_grid in grid.iter() {
+        println!("{:?}", row_grid);
     }
     println!();
 }
