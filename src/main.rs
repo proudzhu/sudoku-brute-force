@@ -13,26 +13,15 @@ fn find_unassigned_location(grid: &[Vec<u8>]) -> Option<Loc> {
 }
 
 fn used_in_row(grid: &[Vec<u8>], row: usize, num: u8) -> bool {
-    for col in 0..grid[row].len() {
-        if grid[row][col] == num { return true; }
-    }
-    false
+    grid[row].iter().any(|&x| x == num)
 }
 
 fn used_in_col(grid: &[Vec<u8>], col: usize, num: u8) -> bool {
-    for row_grid in grid.iter() {
-        if row_grid[col] == num { return true; }
-    }
-    false
+    grid.iter().any(|x| x[col] == num)
 }
 
 fn used_in_box(grid: &[Vec<u8>], row_start: usize, col_start: usize, num: u8) -> bool {
-    for row in 0..3 {
-        for col in 0..3 {
-            if grid[row+row_start][col+col_start] == num { return true; }
-        }
-    }
-    false
+    grid.iter().skip(row_start).take(3).any(|x| x.iter().skip(col_start).take(3).any(|&y| y == num))
 }
 
 fn is_safe(grid: &[Vec<u8>], row: usize, col: usize, num: u8) -> bool {
