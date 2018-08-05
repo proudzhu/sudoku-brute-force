@@ -1,3 +1,5 @@
+// rust impl for https://www.geeksforgeeks.org/backtracking-set-7-suduku/
+
 struct Loc {
     row: usize,
     col: usize,
@@ -5,8 +7,9 @@ struct Loc {
 
 fn find_unassigned_location(grid: &[Vec<u8>]) -> Option<Loc> {
     for (row, row_grid) in grid.iter().enumerate() {
-        for (col, &item) in row_grid.iter().enumerate() {
-            if item == 0 { return Some(Loc{ row, col }); }
+        match row_grid.iter().position(|&x| x == 0) {
+            Some(col) => return Some(Loc{row, col}),
+            None => continue,
         }
     }
     None
@@ -32,7 +35,7 @@ fn is_safe(grid: &[Vec<u8>], row: usize, col: usize, num: u8) -> bool {
 
 fn solve_sudoku(grid: &mut Vec<Vec<u8>>) -> bool {
     let loc = match find_unassigned_location(grid) {
-        Some(loc) => loc,
+        Some(x) => x,
         None => return true,
     };
 
